@@ -1,12 +1,27 @@
 const express = require('express');
 const dotenv = require('dotenv');   //Loads environment variables into process.env
 const connectDB = require('./config/db');
+const morgan = require('morgan');   //HTTP request logger middleware
+const handlebars = require('express-handlebars');
+const routes = require('./routes/index');
 
 dotenv.config({ path: './config/config.env' });  //object with the config file path
 
 connectDB();
 
 const app = express();
+
+//If development mode is executed
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('env'));
+}
+
+//Handlebars
+app.engine('.hbs', handlebars({defaultLayout: false, extname: '.hbs'}));
+app.set('view engine', '.hbs');
+
+//Routes
+app.use('/', routes);
 
 const PORT = process.env.PORT || 5000;
 
