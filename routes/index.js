@@ -3,7 +3,7 @@ const router = express.Router();
 
 //Handle GET request to /
 router.get('/', (request, response) => {
-    response.render('login');
+    response.render('login', {layout: 'login'});
 });
 
 //Handle GET request to /dashboard

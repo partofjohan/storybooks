@@ -4,6 +4,7 @@ const connectDB = require('./config/db');
 const morgan = require('morgan');   //HTTP request logger middleware
 const handlebars = require('express-handlebars');
 const routes = require('./routes/index');
+const path = require('path');
 
 dotenv.config({ path: './config/config.env' });  //object with the config file path
 
@@ -17,8 +18,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 //Handlebars
-app.engine('.hbs', handlebars({defaultLayout: false, extname: '.hbs'}));
+app.engine('.hbs', handlebars({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs');
+
+//Static folder
+app.use(express.static(path.join(__dirname, 'public')))
 
 //Routes
 app.use('/', routes);
